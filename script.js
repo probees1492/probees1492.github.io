@@ -1,6 +1,17 @@
-// Smooth scrolling for navigation links
+// Navbar scroll effect
+const navbar = document.querySelector('.navbar');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
+
+// Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+    anchor.addEventListener('click', function(e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
@@ -12,18 +23,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Navbar background on scroll
-window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-        navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-    } else {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
-    }
-});
-
 // Animate elements on scroll
 const observerOptions = {
     threshold: 0.1,
@@ -33,36 +32,37 @@ const observerOptions = {
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            entry.target.classList.add('visible');
         }
     });
 }, observerOptions);
 
-// Apply animation to cards
-document.querySelectorAll('.project-card, .skill-category, .stat-card').forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(20px)';
-    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(card);
+// Observe cards and items
+document.querySelectorAll('.research-card, .project-item, .pub-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
 });
 
-// Typing effect for subtitle
-const subtitle = document.querySelector('.hero-subtitle');
-if (subtitle) {
-    const text = subtitle.textContent;
-    subtitle.textContent = '';
-    let i = 0;
-    
-    function typeWriter() {
-        if (i < text.length) {
-            subtitle.textContent += text.charAt(i);
-            i++;
-            setTimeout(typeWriter, 50);
-        }
+// Add visible class styles
+const style = document.createElement('style');
+style.textContent = `
+    .visible {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
     }
-    
-    setTimeout(typeWriter, 500);
-}
+`;
+document.head.appendChild(style);
 
-console.log('🤖 AI Builder Portfolio Loaded');
+// Audio bars random animation
+const bars = document.querySelectorAll('.bar');
+function animateBars() {
+    bars.forEach(bar => {
+        const height = 20 + Math.random() * 40;
+        bar.style.height = `${height}px`;
+    });
+}
+setInterval(animateBars, 200);
+
+console.log('🎵 GDK Flow - AI Audio Research');
