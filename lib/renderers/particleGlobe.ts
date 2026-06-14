@@ -92,9 +92,40 @@ export function renderParticleGlobe(
   };
 
   if (slide.title && layout.title) {
-    const t = makeText(slide.title, layout.title.style);
-    placeAnchored(t, layout.title.position);
-    c.addChild(t);
+    const titleCfg = layout.title;
+    const hl = slide.highlightText;
+    if (hl && slide.title.includes(hl)) {
+      // Split into [before, hl, after] and render each with own color
+      const idx = slide.title.indexOf(hl);
+      const before = slide.title.slice(0, idx);
+      const after = slide.title.slice(idx + hl.length);
+      const HL_COLOR = 0x22c55e;
+
+      const parts: Array<{ text: string; color: number }> = [];
+      if (before) parts.push({ text: before, color: titleCfg.style.fill });
+      parts.push({ text: hl, color: HL_COLOR });
+      if (after) parts.push({ text: after, color: titleCfg.style.fill });
+
+      const partTexts = parts.map((p) =>
+        makeText(p.text, { ...titleCfg.style, fill: p.color }),
+      );
+      const totalW = partTexts.reduce((acc, t) => acc + t.width, 0);
+      const cx = titleCfg.position.x;
+      const cy = titleCfg.position.y;
+      let x = cx - totalW / 2;
+      const anchorY = titleCfg.position.anchor?.y ?? 0.5;
+      for (const t of partTexts) {
+        t.anchor.set(0, anchorY);
+        t.x = x;
+        t.y = cy;
+        c.addChild(t);
+        x += t.width;
+      }
+    } else {
+      const t = makeText(slide.title, titleCfg.style);
+      placeAnchored(t, titleCfg.position);
+      c.addChild(t);
+    }
   }
   if (slide.subtitle && layout.body) {
     const t = makeText(slide.subtitle, layout.body.style);

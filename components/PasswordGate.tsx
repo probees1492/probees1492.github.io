@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-const PASSCODE = "1234"; // 4-digit. Note: visible in client bundle.
+const PASSCODE = "2026"; // 4-digit. Note: visible in client bundle.
 const STORAGE_KEY = "seo-journey-unlocked";
 const LENGTH = PASSCODE.length;
 

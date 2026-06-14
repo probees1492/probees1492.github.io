@@ -1,6 +1,7 @@
 import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import type { Slide } from "../slidesData";
 import type { LayoutConfig } from "../layouts";
+import { t, type Lang } from "../i18n";
 import { makeText } from "./textHelpers";
 
 const START_YEAR = 2010;
@@ -27,6 +28,7 @@ export function renderCareerTimeline(
   layout: LayoutConfig,
   width: number,
   height: number,
+  lang: Lang = "ko",
 ): Container {
   const stage = new Container();
 
@@ -100,7 +102,7 @@ export function renderCareerTimeline(
   stage.addChild(startAxisLbl);
 
   const endAxisLbl = new Text({
-    text: "현재",
+    text: t(lang, "current"),
     style: new TextStyle({ fontFamily: MONO, fontSize: 11, fontWeight: "500", fill: COLOR.current }),
   });
   endAxisLbl.anchor.set(1, 0);
@@ -110,7 +112,7 @@ export function renderCareerTimeline(
 
   careers.forEach((c, i) => {
     const rowY = startY + i * rowH;
-    const isCurrent = c.endLabel === "현재";
+    const isCurrent = !!c.endLabel;
     const barColor = isCurrent ? COLOR.current : COLOR.bar;
 
     const barH = 8;

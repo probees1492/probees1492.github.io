@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { slidesData, type Slide } from "@/lib/slidesData";
+import { getSlides, type Slide } from "@/lib/slidesData";
+import type { Lang } from "@/lib/i18n";
 
 const CARD_W = 1000;
 const CARD_H = 600;
@@ -19,7 +20,8 @@ function easeOutBack(t: number): number {
   return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
 }
 
-export default function SlideStage() {
+export default function SlideStage({ lang = "ko" }: { lang?: Lang } = {}) {
+  const slidesData = getSlides(lang);
   const hostRef = useRef<HTMLDivElement | null>(null);
   const appRef = useRef<any>(null);
   const layerRef = useRef<any>(null);
@@ -129,7 +131,7 @@ export default function SlideStage() {
       const { renderSlide } = await import("@/lib/renderers");
       if (canceled) return;
 
-      const incoming = renderSlide(slide as Slide, CARD_W, CARD_H, handleNavigate);
+      const incoming = renderSlide(slide as Slide, CARD_W, CARD_H, handleNavigate, lang);
       incoming.y = CARD_Y;
       const outgoing = currentContainerRef.current;
 
@@ -207,7 +209,7 @@ export default function SlideStage() {
     return () => {
       canceled = true;
     };
-  }, [index]);
+  }, [index, lang]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -247,16 +249,97 @@ export default function SlideStage() {
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("hashchange", onHash);
     };
-  }, []);
+  }, [lang]);
+
+  const currentSlide = slidesData[index];
 
   return (
     <>
       <div id="stage-root" ref={hostRef} />
+      <VideoOverlay
+        slideId={currentSlide?.id}
+        videoUrl={currentSlide?.videoUrl}
+        area={currentSlide?.videoArea}
+      />
       <div className="nav-hint">
         ← → ↑ ↓  ·  scroll  ·  {index + 1} / {slidesData.length}
       </div>
       <Progress index={index} total={slidesData.length} />
     </>
+  );
+}
+
+function VideoOverlay({
+  slideId,
+  videoUrl,
+  area,
+}: {
+  slideId?: string;
+  videoUrl?: string;
+  area?: { x: number; y: number; w: number; h: number };
+}) {
+  const [box, setBox] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
+
+  useEffect(() => {
+    if (!videoUrl || !area) {
+      setBox(null);
+      return;
+    }
+    let raf = 0;
+    const update = () => {
+      const canvas = document.querySelector(
+        "#stage-root canvas",
+      ) as HTMLCanvasElement | null;
+      if (!canvas) {
+        setBox(null);
+        return;
+      }
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = rect.width / STAGE_W;
+      const scaleY = rect.height / STAGE_H;
+      // area is in card-local coords; card is offset at (CARD_X, CARD_Y) within canvas
+      setBox({
+        x: rect.left + (CARD_X + area.x) * scaleX,
+        y: rect.top + (CARD_Y + area.y) * scaleY,
+        w: area.w * scaleX,
+        h: area.h * scaleY,
+      });
+    };
+    update();
+    const handler = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+    window.addEventListener("resize", handler);
+    // Retry a few times in case canvas not yet sized
+    const retries = [50, 150, 400, 800].map((d) => setTimeout(update, d));
+    return () => {
+      window.removeEventListener("resize", handler);
+      cancelAnimationFrame(raf);
+      retries.forEach(clearTimeout);
+    };
+  }, [videoUrl, area, slideId]);
+
+  if (!videoUrl || !box) return null;
+
+  return (
+    <iframe
+      key={slideId}
+      src={videoUrl}
+      title="hobby video"
+      style={{
+        position: "fixed",
+        left: box.x,
+        top: box.y,
+        width: box.w,
+        height: box.h,
+        border: 0,
+        borderRadius: 10,
+        zIndex: 3,
+      }}
+      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
+    />
   );
 }
 

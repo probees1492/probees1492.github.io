@@ -1,5 +1,6 @@
 import { Container, Graphics } from "pixi.js";
 import type { Slide } from "../slidesData";
+import type { Lang } from "../i18n";
 import { layouts } from "../layouts";
 import { renderParticleGlobe } from "./particleGlobe";
 import { renderSimpleText } from "./simpleText";
@@ -8,6 +9,8 @@ import { renderTestimonialCards } from "./testimonialCards";
 import { renderCareerTimeline } from "./careerTimeline";
 import { renderTechStack } from "./techStack";
 import { renderContributionsGrid } from "./contributionsGrid";
+import { renderWorkflowPipeline } from "./workflowPipeline";
+import { renderHobbyCard } from "./hobbyCard";
 import { renderConnectingDots } from "./connectingDots";
 
 const CARD_RADIUS = 14;
@@ -17,6 +20,7 @@ export function renderSlide(
   width: number,
   height: number,
   onNavigate: (url: string) => void,
+  lang: Lang = "ko",
 ): Container {
   const layout = layouts[slide.layoutId];
   if (!layout) return new Container();
@@ -38,13 +42,19 @@ export function renderSlide(
       content = renderJigsawGallery(slide, layout, width, height);
       break;
     case "career-timeline":
-      content = renderCareerTimeline(slide, layout, width, height);
+      content = renderCareerTimeline(slide, layout, width, height, lang);
       break;
     case "tech-stack":
       content = renderTechStack(slide, layout, width, height);
       break;
     case "contributions-grid":
       content = renderContributionsGrid(slide, layout, width, height);
+      break;
+    case "workflow-pipeline":
+      content = renderWorkflowPipeline(slide, layout, width, height, lang);
+      break;
+    case "hobby-card":
+      content = renderHobbyCard(slide, layout, width, height, lang);
       break;
     case "connecting-dots":
       content = renderConnectingDots(slide, layout, width, height);

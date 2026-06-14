@@ -141,6 +141,30 @@ export const layouts: Record<LayoutId, LayoutConfig> = {
       position: { x: 60, y: 78 },
     },
   },
+  "workflow-pipeline": {
+    id: "workflow-pipeline",
+    background: { color: 0x000000 },
+    intro: {
+      style: { fontFamily: MONO, fontSize: 13, fontWeight: "400", fill: dark.gray, lineHeight: 20 },
+      position: { x: 60, y: 50 },
+    },
+    title: {
+      style: { fontFamily: HELV, fontSize: 22, fontWeight: "500", fill: dark.white, lineHeight: 30, wordWrap: true, wordWrapWidth: 880 },
+      position: { x: 60, y: 78 },
+    },
+  },
+  "hobby-card": {
+    id: "hobby-card",
+    background: { color: 0x000000 },
+    intro: {
+      style: { fontFamily: MONO, fontSize: 13, fontWeight: "400", fill: dark.gray, lineHeight: 20 },
+      position: { x: 60, y: 50 },
+    },
+    title: {
+      style: { fontFamily: IVY, fontSize: 32, fontStyle: "italic", fontWeight: "400", fill: dark.white, lineHeight: 40, wordWrap: true, wordWrapWidth: 880 },
+      position: { x: 60, y: 78 },
+    },
+  },
   "connecting-dots": {
     id: "connecting-dots",
     background: { color: 0x000000 },
