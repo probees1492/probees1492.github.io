@@ -1,0 +1,111 @@
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #e5e5e5;
+  color: #111111;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  overflow: hidden;
+  height: 100%;
+}
+#stage-root {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+#stage-root canvas {
+  display: block;
+}
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.nav-hint {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #999;
+  font-family: "Fira Code", ui-monospace, monospace;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+}
+
+.gate-root {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  cursor: text;
+  color: #fff;
+}
+.gate-card {
+  text-align: center;
+}
+.gate-title {
+  font-family: "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 40px;
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+.gate-subtitle {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: #777;
+  margin-bottom: 40px;
+}
+.gate-hidden-input {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.gate-dots {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+.gate-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid #444;
+  background: transparent;
+  transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
+}
+.gate-dot.filled {
+  background: #fff;
+  border-color: #fff;
+}
+.gate-dot.error {
+  background: #ef4444;
+  border-color: #ef4444;
+}
+.gate-shake {
+  animation: gate-shake 0.45s cubic-bezier(.36,.07,.19,.97) both;
+}
+@keyframes gate-shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-8px); }
+  40%, 60% { transform: translateX(8px); }
+}
