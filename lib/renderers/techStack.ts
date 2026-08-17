@@ -1,20 +1,11 @@
 import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import type { Slide } from "../slidesData";
 import type { LayoutConfig } from "../layouts";
+import { RESUME_PALETTE as COLOR } from "../palette";
 import { makeText } from "./textHelpers";
 
 const HELV = "Helvetica Neue, -apple-system, sans-serif";
 const MONO = "ui-monospace, 'SF Mono', Menlo, monospace";
-
-const COLOR = {
-  text: 0xffffff,
-  meta: 0x9ca3af,
-  faint: 0x6b7280,
-  border: 0x3f3f46,
-  fill: 0x101015,
-  current: 0x22c55e,
-  currentText: 0xa7f3d0,
-};
 
 export function renderTechStack(
   slide: Slide,
@@ -68,10 +59,10 @@ export function renderTechStack(
     const box = new Graphics();
     box.roundRect(diagX, y, diagW, layerH, 10);
     if (isHL) {
-      box.fill({ color: COLOR.current, alpha: 0.1 });
-      box.stroke({ width: 2, color: COLOR.current });
+      box.fill(COLOR.accentSoft);
+      box.stroke({ width: 2, color: COLOR.accent });
     } else {
-      box.fill(COLOR.fill);
+      box.fill(COLOR.surface);
       box.stroke({ width: 1, color: COLOR.border });
     }
     stage.addChild(box);
@@ -83,7 +74,7 @@ export function renderTechStack(
         fontFamily: HELV,
         fontSize: 17,
         fontWeight: "600",
-        fill: isHL ? COLOR.current : COLOR.text,
+        fill: isHL ? COLOR.accent : COLOR.ink,
       }),
     });
     label.x = diagX + 20;
@@ -98,7 +89,7 @@ export function renderTechStack(
           fontFamily: MONO,
           fontSize: 11,
           fontWeight: "500",
-          fill: COLOR.current,
+          fill: COLOR.accent,
         }),
       });
       annot.x = label.x + label.width + 12;
@@ -114,7 +105,7 @@ export function renderTechStack(
           fontFamily: HELV,
           fontSize: 12,
           fontWeight: "400",
-          fill: isHL ? COLOR.currentText : COLOR.meta,
+          fill: isHL ? COLOR.accentDark : COLOR.muted,
           lineHeight: 19,
           wordWrap: true,
           wordWrapWidth: diagW - 40,
@@ -161,7 +152,7 @@ export function renderTechStack(
         fontFamily: MONO,
         fontSize: 11,
         fontWeight: "500",
-        fill: COLOR.faint,
+        fill: COLOR.subtle,
         letterSpacing: 1.5,
       }),
     });
@@ -172,14 +163,14 @@ export function renderTechStack(
     const titleRule = new Graphics();
     titleRule.moveTo(notesX, sectionY + 20);
     titleRule.lineTo(notesX + 40, sectionY + 20);
-    titleRule.stroke({ width: 1, color: COLOR.faint });
+    titleRule.stroke({ width: 1, color: COLOR.subtle });
     stage.addChild(titleRule);
 
     let itemY = sectionY + 38;
     section.items.forEach((item) => {
       const bullet = new Graphics();
       bullet.circle(notesX + 4, itemY + 8, 3);
-      bullet.fill(COLOR.current);
+      bullet.fill(COLOR.accent);
       stage.addChild(bullet);
 
       const t = new Text({
@@ -188,7 +179,7 @@ export function renderTechStack(
           fontFamily: HELV,
           fontSize: 13,
           fontWeight: "400",
-          fill: COLOR.text,
+          fill: COLOR.ink,
           wordWrap: true,
           wordWrapWidth: notesW - 20,
           lineHeight: 20,

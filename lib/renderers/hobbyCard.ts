@@ -2,20 +2,11 @@ import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import type { Slide } from "../slidesData";
 import type { LayoutConfig } from "../layouts";
 import { t, type Lang } from "../i18n";
+import { RESUME_PALETTE as COLOR } from "../palette";
 import { makeText } from "./textHelpers";
 
 const HELV = "Helvetica Neue, -apple-system, sans-serif";
 const MONO = "ui-monospace, 'SF Mono', Menlo, monospace";
-
-const COLOR = {
-  text: 0xffffff,
-  meta: 0x9ca3af,
-  faint: 0x6b7280,
-  border: 0x3f3f46,
-  fill: 0x101015,
-  current: 0x22c55e,
-  trackBg: 0x222226,
-};
 
 export function renderHobbyCard(
   slide: Slide,
@@ -57,7 +48,7 @@ export function renderHobbyCard(
         fontFamily: MONO,
         fontSize: 11,
         fontWeight: "500",
-        fill: COLOR.faint,
+        fill: COLOR.subtle,
         letterSpacing: 1.5,
       }),
     });
@@ -71,7 +62,7 @@ export function renderHobbyCard(
         fontFamily: HELV,
         fontSize: 28,
         fontWeight: "600",
-        fill: COLOR.current,
+        fill: COLOR.accent,
       }),
     });
     progValue.anchor.set(1, 0);
@@ -84,13 +75,13 @@ export function renderHobbyCard(
     const trackH = 6;
     const track = new Graphics();
     track.roundRect(leftX, y, leftW, trackH, trackH / 2);
-    track.fill(COLOR.trackBg);
+    track.fill(COLOR.border);
     stage.addChild(track);
 
     const fillW = (leftW * Math.max(0, Math.min(100, slide.progress))) / 100;
     const fill = new Graphics();
     fill.roundRect(leftX, y, fillW, trackH, trackH / 2);
-    fill.fill(COLOR.current);
+    fill.fill(COLOR.accent);
     stage.addChild(fill);
 
     y += trackH + 30;
@@ -104,7 +95,7 @@ export function renderHobbyCard(
         fontFamily: MONO,
         fontSize: 11,
         fontWeight: "500",
-        fill: COLOR.faint,
+        fill: COLOR.subtle,
         letterSpacing: 1.5,
       }),
     });
@@ -120,7 +111,7 @@ export function renderHobbyCard(
         fontFamily: HELV,
         fontSize: 16,
         fontWeight: "500",
-        fill: COLOR.text,
+        fill: COLOR.ink,
         wordWrap: true,
         wordWrapWidth: leftW,
         lineHeight: 24,
@@ -140,7 +131,7 @@ export function renderHobbyCard(
         fontFamily: MONO,
         fontSize: 11,
         fontWeight: "500",
-        fill: COLOR.faint,
+        fill: COLOR.subtle,
         letterSpacing: 1.5,
       }),
     });
@@ -152,7 +143,7 @@ export function renderHobbyCard(
     slide.components.forEach((c) => {
       const bullet = new Graphics();
       bullet.circle(leftX + 4, y + 8, 2.5);
-      bullet.fill(COLOR.current);
+      bullet.fill(COLOR.accent);
       stage.addChild(bullet);
 
       const t = new Text({
@@ -161,7 +152,7 @@ export function renderHobbyCard(
           fontFamily: HELV,
           fontSize: 13,
           fontWeight: "400",
-          fill: COLOR.text,
+          fill: COLOR.ink,
         }),
       });
       t.x = leftX + 16;
@@ -176,7 +167,7 @@ export function renderHobbyCard(
     const a = slide.videoArea;
     const frame = new Graphics();
     frame.roundRect(a.x, a.y, a.w, a.h, 10);
-    frame.fill(0x0a0a0d);
+    frame.fill(COLOR.surface);
     frame.stroke({ width: 1, color: COLOR.border });
     stage.addChild(frame);
 
@@ -187,7 +178,7 @@ export function renderHobbyCard(
         fontFamily: MONO,
         fontSize: 12,
         fontWeight: "400",
-        fill: COLOR.faint,
+        fill: COLOR.subtle,
       }),
     });
     hint.anchor.set(0.5, 0.5);

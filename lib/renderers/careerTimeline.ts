@@ -2,6 +2,7 @@ import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import type { Slide } from "../slidesData";
 import type { LayoutConfig } from "../layouts";
 import { t, type Lang } from "../i18n";
+import { RESUME_PALETTE as COLOR } from "../palette";
 import { makeText } from "./textHelpers";
 
 const START_YEAR = 2010;
@@ -10,18 +11,6 @@ const TOTAL_YEARS = END_YEAR - START_YEAR;
 
 const HELV = "Helvetica Neue, -apple-system, sans-serif";
 const MONO = "ui-monospace, 'SF Mono', Menlo, monospace";
-
-const COLOR = {
-  text: 0xffffff,
-  title: 0xd1d5db, // light gray
-  role: 0x9ca3af, // mid gray
-  year: 0x9ca3af,
-  bar: 0xffffff,
-  gridLine: 0x1f1f1f,
-  axisLine: 0x2a2a2a,
-  axisLabel: 0x6b7280,
-  current: 0x22c55e, // green-500
-};
 
 export function renderCareerTimeline(
   slide: Slide,
@@ -67,7 +56,7 @@ export function renderCareerTimeline(
     const x = yearToX(yr);
     g.moveTo(x, startY - 4);
     g.lineTo(x, startY + rowsArea - 4);
-    g.stroke({ width: 1, color: COLOR.gridLine });
+    g.stroke({ width: 1, color: COLOR.border });
     stage.addChild(g);
     const lbl = new Text({
       text: `${yr}`,
@@ -75,7 +64,7 @@ export function renderCareerTimeline(
         fontFamily: MONO,
         fontSize: 10,
         fontWeight: "400",
-        fill: COLOR.axisLabel,
+        fill: COLOR.subtle,
       }),
     });
     lbl.anchor.set(0.5, 0);
@@ -89,12 +78,12 @@ export function renderCareerTimeline(
   const axisLine = new Graphics();
   axisLine.moveTo(axisLeft, axisLineY);
   axisLine.lineTo(axisRight, axisLineY);
-  axisLine.stroke({ width: 1, color: COLOR.axisLine });
+  axisLine.stroke({ width: 1, color: COLOR.border });
   stage.addChild(axisLine);
 
   const startAxisLbl = new Text({
     text: `${START_YEAR}`,
-    style: new TextStyle({ fontFamily: MONO, fontSize: 11, fontWeight: "400", fill: COLOR.axisLabel }),
+    style: new TextStyle({ fontFamily: MONO, fontSize: 11, fontWeight: "400", fill: COLOR.subtle }),
   });
   startAxisLbl.anchor.set(0, 0);
   startAxisLbl.x = axisLeft;
@@ -103,7 +92,7 @@ export function renderCareerTimeline(
 
   const endAxisLbl = new Text({
     text: t(lang, "current"),
-    style: new TextStyle({ fontFamily: MONO, fontSize: 11, fontWeight: "500", fill: COLOR.current }),
+    style: new TextStyle({ fontFamily: MONO, fontSize: 11, fontWeight: "500", fill: COLOR.accent }),
   });
   endAxisLbl.anchor.set(1, 0);
   endAxisLbl.x = axisRight;
@@ -113,7 +102,7 @@ export function renderCareerTimeline(
   careers.forEach((c, i) => {
     const rowY = startY + i * rowH;
     const isCurrent = !!c.endLabel;
-    const barColor = isCurrent ? COLOR.current : COLOR.bar;
+    const barColor = isCurrent ? COLOR.accent : COLOR.ink;
 
     const barH = 8;
     const barY = rowY + rowH / 2 - barH / 2;
@@ -131,13 +120,13 @@ export function renderCareerTimeline(
     if (isCurrent) {
       const dot = new Graphics();
       dot.circle(xEnd, barY + barH / 2, 6);
-      dot.fill(COLOR.current);
+      dot.fill(COLOR.accent);
       stage.addChild(dot);
 
       // Faint pulse halo
       const halo = new Graphics();
       halo.circle(xEnd, barY + barH / 2, 11);
-      halo.fill({ color: COLOR.current, alpha: 0.18 });
+      halo.fill({ color: COLOR.accent, alpha: 0.18 });
       stage.addChild(halo);
     }
 
@@ -154,7 +143,7 @@ export function renderCareerTimeline(
         fontFamily: HELV,
         fontSize: 15,
         fontWeight: "600",
-        fill: COLOR.text,
+        fill: COLOR.ink,
       }),
     });
     name.x = leftTextX;
@@ -171,7 +160,7 @@ export function renderCareerTimeline(
           fontSize: 11,
           fontStyle: "italic",
           fontWeight: "400",
-          fill: COLOR.role,
+          fill: COLOR.muted,
         }),
       });
       desc.x = leftTextX;
@@ -187,7 +176,7 @@ export function renderCareerTimeline(
         fontFamily: HELV,
         fontSize: 12,
         fontWeight: "500",
-        fill: isCurrent ? COLOR.current : COLOR.title,
+        fill: isCurrent ? COLOR.accent : COLOR.ink,
       }),
     });
     titleText.x = leftTextX;
@@ -202,7 +191,7 @@ export function renderCareerTimeline(
         fontFamily: HELV,
         fontSize: 11,
         fontWeight: "400",
-        fill: COLOR.role,
+        fill: COLOR.muted,
       }),
     });
     role.x = leftTextX;
@@ -216,7 +205,7 @@ export function renderCareerTimeline(
         fontFamily: MONO,
         fontSize: 11,
         fontWeight: "400",
-        fill: COLOR.year,
+        fill: COLOR.muted,
       }),
     });
     startLabel.anchor.set(1, 0.5);
@@ -231,7 +220,7 @@ export function renderCareerTimeline(
         fontFamily: MONO,
         fontSize: 11,
         fontWeight: isCurrent ? "500" : "400",
-        fill: isCurrent ? COLOR.current : COLOR.year,
+        fill: isCurrent ? COLOR.accent : COLOR.muted,
       }),
     });
     endLabel.anchor.set(0, 0.5);

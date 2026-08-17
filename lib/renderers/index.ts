@@ -2,6 +2,7 @@ import { Container, Graphics } from "pixi.js";
 import type { Slide } from "../slidesData";
 import type { Lang } from "../i18n";
 import { layouts } from "../layouts";
+import { RESUME_PALETTE as COLOR } from "../palette";
 import { renderParticleGlobe } from "./particleGlobe";
 import { renderSimpleText } from "./simpleText";
 import { renderJigsawGallery } from "./jigsawGallery";
@@ -30,7 +31,7 @@ export function renderSlide(
   // First shadow filled with the page background color (acts as a seamless backdrop, no drop shadow)
   const shadowFar = new Graphics();
   shadowFar.roundRect(-8, 10, width + 16, height + 22, CARD_RADIUS + 6);
-  shadowFar.fill({ color: 0xe5e5e5, alpha: 1 });
+  shadowFar.fill({ color: COLOR.canvas, alpha: 1 });
   card.addChild(shadowFar);
 
   let content: Container;

@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { getSlides, type Slide } from "@/lib/slidesData";
 import type { Lang } from "@/lib/i18n";
+import { RESUME_PALETTE } from "@/lib/palette";
 
 const CARD_W = 1000;
 const CARD_H = 600;
@@ -66,7 +67,7 @@ export default function SlideStage({ lang = "ko" }: { lang?: Lang } = {}) {
       await app.init({
         width: STAGE_W,
         height: STAGE_H,
-        background: 0xe5e5e5,
+        background: RESUME_PALETTE.canvas,
         antialias: true,
         autoDensity: true,
         resolution: window.devicePixelRatio || 1,
@@ -364,7 +365,7 @@ function Progress({ index, total }: { index: number; total: number }) {
             width: i === index ? 22 : 6,
             height: 3,
             borderRadius: 2,
-            background: i === index ? "#111" : "rgba(0,0,0,0.18)",
+            background: i === index ? "#0B5FFF" : "rgba(82,96,113,0.24)",
             transition: "width 280ms ease, background 280ms ease",
           }}
         />

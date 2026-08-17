@@ -1,6 +1,7 @@
 import { Container, Graphics, Text, TextStyle, FederatedPointerEvent } from "pixi.js";
 import type { Slide } from "../slidesData";
 import type { LayoutConfig } from "../layouts";
+import { RESUME_PALETTE as COLOR } from "../palette";
 import { makeText } from "./textHelpers";
 
 export function renderTestimonialCards(
@@ -45,8 +46,8 @@ export function renderTestimonialCards(
     const card = new Container();
     const bg = new Graphics();
     bg.roundRect(-cardW / 2, -cardH / 2, cardW, cardH, 14);
-    bg.fill(0x111111);
-    bg.stroke({ width: 1, color: 0x333333 });
+    bg.fill(COLOR.surface);
+    bg.stroke({ width: 1, color: COLOR.border });
     card.addChild(bg);
 
     const quote = new Text({
@@ -55,7 +56,7 @@ export function renderTestimonialCards(
         fontFamily: "Helvetica Neue, sans-serif",
         fontSize: 15,
         fontWeight: "400",
-        fill: 0xffffff,
+        fill: COLOR.ink,
         wordWrap: true,
         wordWrapWidth: cardW - 60,
         lineHeight: 24,
@@ -72,7 +73,7 @@ export function renderTestimonialCards(
         fontFamily: "Helvetica Neue, sans-serif",
         fontSize: 14,
         fontWeight: "500",
-        fill: 0xffffff,
+        fill: COLOR.ink,
       }),
     });
     name.x = -cardW / 2 + 30;
@@ -85,7 +86,7 @@ export function renderTestimonialCards(
         fontFamily: "ui-monospace, monospace",
         fontSize: 12,
         fontWeight: "400",
-        fill: 0x888888,
+        fill: COLOR.muted,
       }),
     });
     company.x = -cardW / 2 + 30;

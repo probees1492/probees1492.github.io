@@ -1,19 +1,11 @@
 import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import type { Slide } from "../slidesData";
 import type { LayoutConfig } from "../layouts";
+import { RESUME_PALETTE as COLOR } from "../palette";
 import { makeText } from "./textHelpers";
 
 const HELV = "Helvetica Neue, -apple-system, sans-serif";
 const MONO = "ui-monospace, 'SF Mono', Menlo, monospace";
-
-const COLOR = {
-  text: 0xffffff,
-  meta: 0x9ca3af,
-  faint: 0x6b7280,
-  border: 0x3f3f46,
-  fill: 0x101015,
-  current: 0x22c55e,
-};
 
 export function renderContributionsGrid(
   slide: Slide,
@@ -56,14 +48,14 @@ export function renderContributionsGrid(
 
     const card = new Graphics();
     card.roundRect(cardX, y, cardW, cardH, 8);
-    card.fill(COLOR.fill);
+    card.fill(COLOR.surface);
     card.stroke({ width: 1, color: COLOR.border });
     stage.addChild(card);
 
-    // Green left accent bar (sits inside card, slightly inset from rounded corners)
+    // Resume-blue accent bar (sits inside card, slightly inset from rounded corners)
     const accent = new Graphics();
     accent.rect(cardX + 2, y + 8, 3, cardH - 16);
-    accent.fill(COLOR.current);
+    accent.fill(COLOR.accent);
     stage.addChild(accent);
 
     // Label
@@ -73,7 +65,7 @@ export function renderContributionsGrid(
         fontFamily: HELV,
         fontSize: 14,
         fontWeight: "600",
-        fill: COLOR.text,
+        fill: COLOR.ink,
       }),
     });
     label.x = cardX + 20;
@@ -88,7 +80,7 @@ export function renderContributionsGrid(
           fontFamily: HELV,
           fontSize: 11,
           fontWeight: "400",
-          fill: COLOR.meta,
+          fill: COLOR.muted,
           wordWrap: true,
           wordWrapWidth: cardW - 40,
           lineHeight: 16,
@@ -113,7 +105,7 @@ export function renderContributionsGrid(
         fontFamily: MONO,
         fontSize: 11,
         fontWeight: "500",
-        fill: COLOR.faint,
+        fill: COLOR.subtle,
         letterSpacing: 1.5,
       }),
     });
@@ -124,14 +116,14 @@ export function renderContributionsGrid(
     const titleRule = new Graphics();
     titleRule.moveTo(notesX, sectionY + 20);
     titleRule.lineTo(notesX + 40, sectionY + 20);
-    titleRule.stroke({ width: 1, color: COLOR.faint });
+    titleRule.stroke({ width: 1, color: COLOR.subtle });
     stage.addChild(titleRule);
 
     let itemY = sectionY + 38;
     section.items.forEach((item) => {
       const bullet = new Graphics();
       bullet.circle(notesX + 4, itemY + 8, 3);
-      bullet.fill(COLOR.current);
+      bullet.fill(COLOR.accent);
       stage.addChild(bullet);
 
       const t = new Text({
@@ -140,7 +132,7 @@ export function renderContributionsGrid(
           fontFamily: HELV,
           fontSize: 13,
           fontWeight: "400",
-          fill: COLOR.text,
+          fill: COLOR.ink,
           wordWrap: true,
           wordWrapWidth: notesW - 20,
           lineHeight: 20,

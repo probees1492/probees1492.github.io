@@ -1,6 +1,7 @@
 import { Container, Graphics, Ticker } from "pixi.js";
 import type { Slide } from "../slidesData";
 import type { LayoutConfig } from "../layouts";
+import { RESUME_PALETTE as COLOR } from "../palette";
 import { makeText, placeAnchored, renderLinks } from "./textHelpers";
 
 export function renderParticleGlobe(
@@ -36,7 +37,7 @@ export function renderParticleGlobe(
     const z = Math.cos(theta);
     const g = new Graphics();
     g.circle(0, 0, 1.2);
-    g.fill(0xffffff);
+    g.fill(COLOR.ink);
     dots.addChild(g);
     particles.push({ x, y, z, g });
   }
@@ -99,7 +100,7 @@ export function renderParticleGlobe(
       const idx = slide.title.indexOf(hl);
       const before = slide.title.slice(0, idx);
       const after = slide.title.slice(idx + hl.length);
-      const HL_COLOR = 0x22c55e;
+      const HL_COLOR = COLOR.accent;
 
       const parts: Array<{ text: string; color: number }> = [];
       if (before) parts.push({ text: before, color: titleCfg.style.fill });
@@ -138,7 +139,7 @@ export function renderParticleGlobe(
     renderLinks(
       c,
       slide.links,
-      { ...layout.body.style, fontSize: 14, fill: 0xffffff },
+      { ...layout.body.style, fontSize: 14, fill: COLOR.accent },
       width / 2 - 40,
       height - 80,
       onNavigate,
