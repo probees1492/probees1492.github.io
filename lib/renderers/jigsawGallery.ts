@@ -9,10 +9,11 @@ import {
 } from "pixi.js";
 import type { Slide } from "../slidesData";
 import type { LayoutConfig } from "../layouts";
+import { RESUME_PALETTE as COLOR } from "../palette";
 import { makeText } from "./textHelpers";
 
 const PALETTE = [
-  0x223344, 0x334455, 0x445566, 0x556677, 0x667788, 0x445577, 0x334466, 0x556688, 0x447799,
+  0x0b5fff, 0x1648a4, 0x385a8c, 0x526071, 0x7a8493, 0x4773c9, 0x6688c8, 0x85a3dc, 0x305fba,
 ];
 
 async function loadOrPlaceholder(src: string, idx: number): Promise<Texture> {
@@ -101,7 +102,7 @@ export function renderJigsawGallery(
     fontFamily: "Helvetica Neue, sans-serif",
     fontSize: 18,
     fontWeight: "400",
-    fill: 0xffffff,
+    fill: COLOR.ink,
     align: "center",
   });
   const caption = new Text({ text: "", style: captionStyle });
@@ -114,7 +115,7 @@ export function renderJigsawGallery(
     fontFamily: "Helvetica Neue, sans-serif",
     fontSize: 14,
     fontWeight: "300",
-    fill: 0x888888,
+    fill: COLOR.muted,
     align: "center",
   });
   const status = new Text({ text: "이미지를 클릭하면 퍼즐이 시작됩니다", style: statusStyle });
@@ -128,7 +129,7 @@ export function renderJigsawGallery(
     fontSize: 48,
     fontStyle: "italic",
     fontWeight: "400",
-    fill: 0xffffff,
+    fill: COLOR.accent,
   });
   const solvedText = new Text({ text: "Solved!", style: solvedStyle });
   solvedText.anchor.set(0.5);
@@ -143,11 +144,11 @@ export function renderJigsawGallery(
   solveBtn.visible = false;
   const solveBg = new Graphics();
   solveBg.roundRect(0, 0, 100, 36, 18);
-  solveBg.fill(0xffffff);
+  solveBg.fill(COLOR.accent);
   solveBtn.addChild(solveBg);
   const solveLabel = new Text({
     text: "Solve it",
-    style: new TextStyle({ fontFamily: "Helvetica Neue, sans-serif", fontSize: 13, fontWeight: "500", fill: 0 }),
+    style: new TextStyle({ fontFamily: "Helvetica Neue, sans-serif", fontSize: 13, fontWeight: "500", fill: COLOR.page }),
   });
   solveLabel.anchor.set(0.5);
   solveLabel.x = 50;
@@ -155,8 +156,8 @@ export function renderJigsawGallery(
   solveBtn.addChild(solveLabel);
   solveBtn.eventMode = "static";
   solveBtn.cursor = "pointer";
-  solveBtn.on("pointerover", () => (solveBg.tint = 0xcccccc));
-  solveBtn.on("pointerout", () => (solveBg.tint = 0xffffff));
+  solveBtn.on("pointerover", () => (solveBg.tint = COLOR.accentDark));
+  solveBtn.on("pointerout", () => (solveBg.tint = COLOR.page));
   stage.addChild(solveBtn);
 
   const thumbSelectors: Graphics[] = [];
@@ -241,7 +242,7 @@ export function renderJigsawGallery(
 
       const border = new Graphics();
       border.roundRect(0, 0, 130, 130, 4);
-      border.stroke({ width: 1, color: 0x333334, alpha: 0.5 });
+      border.stroke({ width: 1, color: COLOR.border });
       piece.addChild(border);
 
       piece.x = 130 * gridCol;
@@ -517,7 +518,7 @@ export function renderJigsawGallery(
 
     const sel = new Graphics();
     sel.roundRect(-4, -4, 88, 68, 8);
-    sel.stroke({ width: 3, color: 0xffffff });
+    sel.stroke({ width: 3, color: COLOR.accent });
     sel.visible = i === 0;
     thumbSelectors.push(sel);
     thumb.addChild(sel);

@@ -2,21 +2,11 @@ import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import type { Slide } from "../slidesData";
 import type { LayoutConfig } from "../layouts";
 import { t, type Lang } from "../i18n";
+import { RESUME_PALETTE as COLOR } from "../palette";
 import { makeText } from "./textHelpers";
 
 const HELV = "Helvetica Neue, -apple-system, sans-serif";
 const MONO = "ui-monospace, 'SF Mono', Menlo, monospace";
-
-const COLOR = {
-  text: 0xffffff,
-  meta: 0x9ca3af,
-  faint: 0x6b7280,
-  border: 0x3f3f46,
-  fill: 0x101015,
-  current: 0x22c55e,
-  currentText: 0xa7f3d0,
-  arrow: 0x666666,
-};
 
 export function renderWorkflowPipeline(
   slide: Slide,
@@ -67,7 +57,7 @@ export function renderWorkflowPipeline(
           fontFamily: MONO,
           fontSize: 10,
           fontWeight: "500",
-          fill: isHL ? COLOR.current : COLOR.faint,
+          fill: isHL ? COLOR.accent : COLOR.subtle,
           letterSpacing: 2,
         }),
       });
@@ -80,10 +70,10 @@ export function renderWorkflowPipeline(
     const box = new Graphics();
     box.roundRect(boxX, boxTopY, boxW, boxH, 10);
     if (isHL) {
-      box.fill({ color: COLOR.current, alpha: 0.1 });
-      box.stroke({ width: 2, color: COLOR.current });
+      box.fill(COLOR.accentSoft);
+      box.stroke({ width: 2, color: COLOR.accent });
     } else {
-      box.fill(COLOR.fill);
+      box.fill(COLOR.surface);
       box.stroke({ width: 1, color: COLOR.border });
     }
     stage.addChild(box);
@@ -95,7 +85,7 @@ export function renderWorkflowPipeline(
         fontFamily: HELV,
         fontSize: 14,
         fontWeight: "600",
-        fill: isHL ? COLOR.current : COLOR.text,
+        fill: isHL ? COLOR.accent : COLOR.ink,
         wordWrap: true,
         wordWrapWidth: boxW - 32,
         lineHeight: 20,
@@ -111,7 +101,7 @@ export function renderWorkflowPipeline(
       s.items.forEach((item) => {
         const bullet = new Graphics();
         bullet.circle(boxX + 22, itemY + 8, 2.5);
-        bullet.fill(isHL ? COLOR.current : COLOR.meta);
+        bullet.fill(isHL ? COLOR.accent : COLOR.muted);
         stage.addChild(bullet);
 
         const t = new Text({
@@ -120,7 +110,7 @@ export function renderWorkflowPipeline(
             fontFamily: HELV,
             fontSize: 12,
             fontWeight: "400",
-            fill: isHL ? COLOR.currentText : COLOR.meta,
+            fill: isHL ? COLOR.accentDark : COLOR.muted,
             wordWrap: true,
             wordWrapWidth: boxW - 44,
             lineHeight: 18,
@@ -140,11 +130,11 @@ export function renderWorkflowPipeline(
       const arrow = new Graphics();
       arrow.moveTo(ax + 6, ay);
       arrow.lineTo(ax + arrowW - 8, ay);
-      arrow.stroke({ width: 1.5, color: COLOR.arrow });
+      arrow.stroke({ width: 1.5, color: COLOR.subtle });
       arrow.moveTo(ax + arrowW - 12, ay - 5);
       arrow.lineTo(ax + arrowW - 6, ay);
       arrow.lineTo(ax + arrowW - 12, ay + 5);
-      arrow.stroke({ width: 1.5, color: COLOR.arrow });
+      arrow.stroke({ width: 1.5, color: COLOR.subtle });
       stage.addChild(arrow);
     }
   });
@@ -158,7 +148,7 @@ export function renderWorkflowPipeline(
         fontFamily: HELV,
         fontSize: 11,
         fontWeight: "600",
-        fill: 0x000000,
+        fill: COLOR.page,
       }),
     });
     const padW = 10;
@@ -169,7 +159,7 @@ export function renderWorkflowPipeline(
     const py = footerY;
     const pill = new Graphics();
     pill.roundRect(px, py, pw, ph, ph / 2);
-    pill.fill(COLOR.current);
+    pill.fill(COLOR.accent);
     stage.addChild(pill);
     labelPill.x = px + padW;
     labelPill.y = py + padH;
@@ -181,7 +171,7 @@ export function renderWorkflowPipeline(
         fontFamily: HELV,
         fontSize: 13,
         fontWeight: "400",
-        fill: COLOR.text,
+        fill: COLOR.ink,
         wordWrap: true,
         wordWrapWidth: width - padX * 2 - pw - 16,
         lineHeight: 20,

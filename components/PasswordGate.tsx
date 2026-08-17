@@ -46,7 +46,7 @@ export default function PasswordGate({ children }: { children: React.ReactNode }
   }
 
   if (!ready) {
-    return <div style={{ position: "fixed", inset: 0, background: "#e5e5e5" }} />;
+    return <div style={{ position: "fixed", inset: 0, background: "#E5EAF0" }} />;
   }
   if (unlocked) return <>{children}</>;
 

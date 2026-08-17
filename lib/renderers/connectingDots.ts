@@ -1,19 +1,11 @@
 import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import type { Slide } from "../slidesData";
 import type { LayoutConfig } from "../layouts";
+import { RESUME_PALETTE as COLOR } from "../palette";
 
 const HELV = "Helvetica Neue, -apple-system, sans-serif";
 const IVY = "Times New Roman, serif";
 const MONO = "ui-monospace, 'SF Mono', Menlo, monospace";
-
-const COLOR = {
-  text: 0xffffff,
-  meta: 0x9ca3af,
-  faint: 0x6b7280,
-  dot: 0xffffff,
-  line: 0xffffff,
-  current: 0x22c55e,
-};
 
 export function renderConnectingDots(
   slide: Slide,
@@ -36,7 +28,7 @@ export function renderConnectingDots(
     const r = 0.3 + ((i * 7) % 10) / 20;
     const a = 0.06 + ((i * 11) % 15) / 100;
     s.circle(px, py, r);
-    s.fill({ color: 0xffffff, alpha: a });
+    s.fill({ color: COLOR.accent, alpha: a });
     stage.addChild(s);
   }
 
@@ -48,7 +40,7 @@ export function renderConnectingDots(
         fontFamily: MONO,
         fontSize: 12,
         fontWeight: "400",
-        fill: COLOR.faint,
+        fill: COLOR.subtle,
         align: "center",
         letterSpacing: 2,
       }),
@@ -68,7 +60,7 @@ export function renderConnectingDots(
         fontSize: 36,
         fontStyle: "italic",
         fontWeight: "400",
-        fill: COLOR.text,
+        fill: COLOR.ink,
         align: "center",
         lineHeight: 44,
       }),
@@ -88,7 +80,7 @@ export function renderConnectingDots(
         fontSize: 13,
         fontStyle: "italic",
         fontWeight: "400",
-        fill: COLOR.meta,
+        fill: COLOR.muted,
         align: "center",
         lineHeight: 20,
         wordWrap: true,
@@ -113,7 +105,7 @@ export function renderConnectingDots(
     const line = new Graphics();
     line.moveTo(a.x, a.y);
     line.lineTo(b.x, b.y);
-    line.stroke({ width: 1, color: COLOR.line, alpha: 0.18 });
+    line.stroke({ width: 1, color: COLOR.accent, alpha: 0.18 });
     stage.addChild(line);
   });
 
@@ -124,13 +116,13 @@ export function renderConnectingDots(
     if (isHL) {
       const glow = new Graphics();
       glow.circle(d.x, d.y, 14);
-      glow.fill({ color: COLOR.current, alpha: 0.18 });
+      glow.fill({ color: COLOR.accent, alpha: 0.18 });
       stage.addChild(glow);
     }
 
     const dot = new Graphics();
     dot.circle(d.x, d.y, isHL ? 6 : 4);
-    dot.fill(isHL ? COLOR.current : COLOR.dot);
+    dot.fill(isHL ? COLOR.accent : COLOR.ink);
     stage.addChild(dot);
 
     const label = new Text({
@@ -139,7 +131,7 @@ export function renderConnectingDots(
         fontFamily: HELV,
         fontSize: 12,
         fontWeight: isHL ? "600" : "400",
-        fill: isHL ? COLOR.current : 0xe5e5e5,
+        fill: isHL ? COLOR.accent : COLOR.ink,
       }),
     });
     const pos = d.labelPos || "bottom";
